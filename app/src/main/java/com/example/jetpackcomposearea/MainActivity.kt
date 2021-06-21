@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateMapOf
@@ -47,17 +49,12 @@ fun Greeting(name: String) {
 
 //Column similar with linearlayout
 @Composable
-fun ColumnDemo(nameList: MutableList<String> = mutableListOf("Harry", "Potter")) {
+fun ColumnDemo(nameList: MutableList<String> = MutableList(1000) { "Android #$it" }) {
 
     val countState = remember { mutableStateOf(0) }
 
     Column(modifier = Modifier.fillMaxHeight()) {
-        Column(modifier = Modifier.weight(1f)) {
-            for (name in nameList) {
-                Greeting(name = name)
-                Divider(color = Color.Blue)
-            }
-        }
+        NameList(names = nameList, Modifier.weight(1f))
         Divider(color = Color.Transparent, thickness = 32.dp)
         Counter(
             count = countState.value,
@@ -77,6 +74,17 @@ fun Counter(count: Int, updateCount: (Int) -> Unit) {
         colors = ButtonDefaults.buttonColors(backgroundColor = if (count > 5) Color.Magenta else Color.Blue)
     ) {
         Text("I've been clicked $count times")
+    }
+}
+
+//Lazy column=Recyclerview
+@Composable
+fun NameList(names: List<String>, modifier: Modifier = Modifier) {
+    LazyColumn(modifier = modifier) {
+        items(names) { name ->
+            Greeting(name = name)
+            Divider(color = Color.Black)
+        }
     }
 }
 
