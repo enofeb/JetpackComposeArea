@@ -60,6 +60,7 @@ fun Greeting(name: String) {
             .padding(12.dp)
             .background(color = backgroundColor)
             .clickable(onClick = { isSelected = !isSelected }),
+        style = MaterialTheme.typography.overline
     )
 }
 
