@@ -1,5 +1,7 @@
 package com.example.jetpackcomposearea
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import androidx.activity.ComponentActivity
@@ -29,7 +31,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApp {
-                ColumnDemo()
+                ColumnDemo(context = this)
             }
         }
     }
@@ -66,7 +68,10 @@ fun Greeting(name: String) {
 
 //Column similar with linearlayout
 @Composable
-fun ColumnDemo(nameList: MutableList<String> = MutableList(1000) { "Android #$it" }) {
+fun ColumnDemo(
+    nameList: MutableList<String> = MutableList(1000) { "Android #$it" },
+    context: Context? = null
+) {
 
     val countState = remember { mutableStateOf(0) }
 
@@ -77,17 +82,22 @@ fun ColumnDemo(nameList: MutableList<String> = MutableList(1000) { "Android #$it
             count = countState.value,
             updateCount = { newValue ->
                 countState.value = newValue
-            }
+            },
+            context = context!!
         )
     }
 }
 
 //Button
 @Composable
-fun Counter(count: Int, updateCount: (Int) -> Unit) {
+fun Counter(count: Int, updateCount: (Int) -> Unit, context: Context) {
 
     Button(
-        onClick = { updateCount(count + 1) },
+        onClick = {
+            val intent = Intent(context, ImageActivity::class.java)
+            context.startActivity(intent)
+            updateCount(count + 1)
+        },
         colors = ButtonDefaults.buttonColors(backgroundColor = if (count > 5) Color.Magenta else Color.Blue)
     ) {
         Text("I've been clicked $count times")
