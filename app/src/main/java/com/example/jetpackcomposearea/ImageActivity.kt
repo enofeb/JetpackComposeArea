@@ -1,15 +1,19 @@
 package com.example.jetpackcomposearea
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -25,7 +29,7 @@ class ImageActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LoadScreen {
-                HeaderWithImage()
+                HeaderWithImage(context = this)
             }
         }
     }
@@ -41,7 +45,7 @@ fun LoadScreen(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun HeaderWithImage() {
+fun HeaderWithImage(context: Context? = null) {
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -71,6 +75,17 @@ fun HeaderWithImage() {
             text = "Dallas,USA", style = typography.subtitle1
         )
         Text(text = "December 2021", style = typography.body2, color = Color.LightGray)
+        Button(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 12.dp),
+            onClick = {
+                val intent = Intent(context, PersonActivity::class.java)
+                context?.startActivity(intent)
+            },
+        ) {
+            Text(text = "Jump")
+        }
     }
 }
 
